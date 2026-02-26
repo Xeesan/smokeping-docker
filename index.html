@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smokeping Docker Stack — Docs</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #080c10;
@@ -18,6 +16,9 @@
     --text: #c9d1d9;
     --muted: #6e7681;
     --warning: #fbbf24;
+    --font-display: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +26,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-body);
     font-size: 14px;
     line-height: 1.7;
     min-height: 100vh;
@@ -58,16 +59,14 @@
   }
 
   @keyframes drift {
-    from { transform: translate(0, 0); }
-    to { transform: translate(60px, 40px); }
+    from { transform: translate(0,0); }
+    to   { transform: translate(60px,40px); }
   }
 
   .glow-orb2 {
     position: fixed;
-    bottom: -10%;
-    right: -5%;
-    width: 500px;
-    height: 500px;
+    bottom: -10%; right: -5%;
+    width: 500px; height: 500px;
     background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
@@ -75,8 +74,8 @@
   }
 
   @keyframes drift2 {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-40px, -60px); }
+    from { transform: translate(0,0); }
+    to   { transform: translate(-40px,-60px); }
   }
 
   .wrapper {
@@ -84,9 +83,10 @@
     z-index: 1;
     max-width: 860px;
     margin: 0 auto;
-    padding: 60px 24px 100px;
+    padding: 40px 16px 80px;
   }
 
+  /* ── HEADER ── */
   .header { margin-bottom: 64px; animation: fadeUp 0.6s ease both; }
 
   .header-badge {
@@ -115,32 +115,45 @@
 
   @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    50%       { opacity: 0.3; }
   }
 
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(36px, 6vw, 58px);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: #fff;
+  /* ── HEADING — reliable two-line layout ── */
+  .h1-wrap {
+    display: block;
     margin-bottom: 8px;
   }
 
-  h1 span {
+  .h1-line {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    font-size: 30px;
+  }
+
+  @media (min-width: 480px) { .h1-line { font-size: 42px; } }
+  @media (min-width: 720px) { .h1-line { font-size: 58px; } }
+
+  .h1-line.white { color: #fff; }
+
+  .h1-line.grad {
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    /* extra paint area so descenders aren't clipped */
+    padding-bottom: 0.18em;
+    margin-bottom: -0.1em;
   }
 
   .header-sub {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
+    font-family: var(--font-body);
+    font-size: 12px;
     font-weight: 600;
     color: var(--muted);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 20px;
   }
@@ -148,7 +161,8 @@
   .header-desc {
     max-width: 580px;
     color: var(--muted);
-    font-size: 13px;
+    font-family: var(--font-body);
+    font-size: 14px;
     line-height: 1.8;
     margin-bottom: 20px;
   }
@@ -164,12 +178,50 @@
     letter-spacing: 0.05em;
   }
 
+  .header-btns {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .btn-gh {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+  }
+  .btn-gh:hover {
+    background: rgba(0,229,255,0.08);
+    border-color: rgba(0,229,255,0.3);
+  }
+
+  .btn-dl {
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
+    color: var(--accent);
+  }
+  .btn-dl:hover { background: rgba(0,229,255,0.15); }
+
+  /* ── SECTIONS ── */
   .section { margin-bottom: 52px; animation: fadeUp 0.6s ease both; }
-  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.10s; }
   .section:nth-child(3) { animation-delay: 0.15s; }
-  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.20s; }
   .section:nth-child(5) { animation-delay: 0.25s; }
-  .section:nth-child(6) { animation-delay: 0.3s; }
+  .section:nth-child(6) { animation-delay: 0.30s; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -184,7 +236,7 @@
   }
 
   .section-label h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.2em;
@@ -200,14 +252,19 @@
     background: linear-gradient(90deg, rgba(0,229,255,0.2), transparent);
   }
 
+  /* ── CARDS ── */
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
     border-radius: 8px;
     overflow: hidden;
+  }
+
+  @media (min-width: 600px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
   }
 
   .card {
@@ -230,19 +287,19 @@
 
   .card:hover { background: var(--surface2); }
   .card:hover::before { opacity: 1; }
-
   .card-icon { font-size: 20px; margin-bottom: 12px; display: block; }
 
   .card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 13px;
     font-weight: 700;
     color: #fff;
     margin-bottom: 8px;
   }
 
-  .card p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .card p { font-size: 13px; color: var(--muted); line-height: 1.7; font-family: var(--font-body); }
 
+  /* ── PREREQS ── */
   .prereq-list {
     display: flex;
     flex-direction: column;
@@ -271,7 +328,7 @@
     flex-shrink: 0;
   }
 
-  .prereq-item span { font-size: 13px; color: var(--text); }
+  .prereq-item span { font-size: 13px; color: var(--text); font-family: var(--font-body); }
 
   .prereq-item code {
     margin-left: auto;
@@ -281,8 +338,10 @@
     border: 1px solid var(--border);
     border-radius: 3px;
     padding: 2px 8px;
+    font-family: var(--font-mono);
   }
 
+  /* ── TREE ── */
   .tree {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -300,20 +359,23 @@
   }
 
   .tree-dot { width: 10px; height: 10px; border-radius: 50%; }
-
-  .tree-body { padding: 20px 24px; font-size: 13px; line-height: 2; }
-  .tree-body .dir { color: var(--accent); font-weight: 500; }
+  .tree-body { padding: 20px 24px; font-size: 13px; line-height: 2; overflow-x: auto; }
+  .tree-body .dir  { color: var(--accent); font-weight: 500; }
   .tree-body .file { color: var(--text); }
   .tree-body .comment { color: var(--muted); font-size: 11px; }
-  .tree-body .hl { color: var(--warning); }
+  .tree-body .hl   { color: var(--warning); }
 
+  /* ── STEPS ── */
   .steps { display: flex; flex-direction: column; gap: 1px; }
 
   .step {
     display: grid;
-    grid-template-columns: 52px 1fr;
+    grid-template-columns: 44px 1fr;
     background: var(--border);
+    min-width: 0;
   }
+
+  .step > * { min-width: 0; }
 
   .step:first-child { border-radius: 8px 8px 0 0; overflow: hidden; }
   .step:last-child  { border-radius: 0 0 8px 8px; overflow: hidden; }
@@ -324,7 +386,7 @@
     align-items: flex-start;
     justify-content: center;
     padding-top: 22px;
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 11px;
     font-weight: 800;
     color: var(--accent);
@@ -332,24 +394,20 @@
     border-right: 1px solid var(--border);
   }
 
-  .step-content {
-    background: var(--surface);
-    padding: 20px 24px;
-    transition: background 0.2s;
-  }
-
+  .step-content { background: var(--surface); padding: 16px 16px; transition: background 0.2s; overflow: hidden; }
   .step:hover .step-content { background: var(--surface2); }
 
   .step-content h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 13px;
     font-weight: 700;
     color: #fff;
     margin-bottom: 8px;
   }
 
-  .step-content p { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .step-content p { font-size: 13px; color: var(--muted); margin-bottom: 12px; font-family: var(--font-body); }
 
+  /* ── CODE ── */
   pre {
     background: #020408;
     border: 1px solid var(--border);
@@ -358,9 +416,11 @@
     padding: 14px 16px;
     font-size: 12px;
     overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
     color: #e6edf3;
     margin-top: 10px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
   }
 
   pre .cmd { color: var(--accent); }
@@ -374,9 +434,10 @@
     padding: 1px 6px;
     font-size: 12px;
     color: var(--accent);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
   }
 
+  /* ── TROUBLESHOOTING ── */
   .trouble-cards { display: flex; flex-direction: column; gap: 12px; }
 
   .trouble-card {
@@ -396,7 +457,7 @@
     padding: 14px 18px;
     background: var(--surface2);
     border-bottom: 1px solid var(--border);
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 12px;
     font-weight: 700;
     color: #fff;
@@ -404,11 +465,13 @@
 
   .trouble-body {
     padding: 16px 18px;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--muted);
     line-height: 1.8;
+    font-family: var(--font-body);
   }
 
+  /* ── FOOTER ── */
   .footer {
     margin-top: 80px;
     padding-top: 24px;
@@ -421,7 +484,7 @@
   }
 
   .footer-author {
-    font-family: 'Syne', sans-serif;
+    font-family: var(--font-display);
     font-size: 12px;
     font-weight: 700;
     color: var(--muted);
@@ -442,18 +505,23 @@
 
   <header class="header">
     <div class="header-badge">Active · Network Monitor</div>
-    <h1>Smokeping<br><span>Docker Stack</span></h1>
+
+    <div class="h1-wrap">
+      <span class="h1-line white">Smokeping</span>
+      <span class="h1-line grad">Docker Stack</span>
+    </div>
+
     <p class="header-sub">With Smart Telegram Alerts · Revamped</p>
     <p class="header-desc">
       A fully containerized Smokeping environment tailored for reliable network monitoring. Bundles the core Smokeping daemon, Apache2 web UI, a custom geolocation-aware Telegram alerting system, and sidecar containers for secure remote management via Cloudflare and Tailscale.
     </p>
     <span class="header-tag">⚡ Optimized for Game Servers &amp; CDNs</span>
-    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
-      <a href="https://github.com/Xeesan/smokeping-docker" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:8px 16px;font-size:12px;color:#fff;text-decoration:none;letter-spacing:0.05em;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,229,255,0.08)';this.style.borderColor='rgba(0,229,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)'">
+    <div class="header-btns">
+      <a href="https://github.com/Xeesan/smokeping-docker" target="_blank" class="btn btn-gh">
         <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         Xeesan / smokeping-docker
       </a>
-      <a href="https://github.com/Xeesan/smokeping-docker/archive/refs/heads/main.zip" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:6px;padding:8px 16px;font-size:12px;color:#00e5ff;text-decoration:none;letter-spacing:0.05em;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,229,255,0.15)'" onmouseout="this.style.background='rgba(0,229,255,0.08)'">
+      <a href="https://github.com/Xeesan/smokeping-docker/archive/refs/heads/main.zip" target="_blank" class="btn btn-dl">
         ↓ Download ZIP
       </a>
     </div>
