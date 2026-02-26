@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  smokeping:
+    build: .
+    container_name: smokeping_core
+    restart: unless-stopped
+    volumes:
+      # Mount your specific configurations (eFootball, FNA/GGC cache nodes, polling logic)
+      - ./config/Targets:/etc/smokeping/config.d/Targets
+      - ./config/Alerts:/etc/smokeping/config.d/Alerts
+      - ./config/Database:/etc/smokeping/config.d/Database
+      # Persist the RRD graph data so history isn't lost on restart
+      - smokeping_data:/var/lib/smokeping 
+    ports:
+      - "8080:80"
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: smokeping_tunnel
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=your_cloudflare_tunnel_token_here
+
+  tailscale:
+    image: tailscale/tailscale:latest
+    container_name: smokeping_tailscale
+    hostname: smokeping-monitor
+    environment:
+      - TS_AUTHKEY=your_tailscale_auth_key_here
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - tailscale_data:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
+
+volumes:
+  smokeping_data:
+  tailscale_data:
+  

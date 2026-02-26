@@ -1,0 +1,115 @@
+*** Alerts ***
+to = |/usr/local/bin/smokeping-telegram-alert.sh
+from = smokeping@mux.xisan.tech
+
+# ========== PACKET LOSS ALERTS ==========
+
+# Alert on ANY packet loss (1%+)
++ packetloss_1percent
+type = loss
+pattern = >0%,*4*,>0%,*4*,>0%
+edgetrigger = yes
+comment = Packet loss detected (1% or more)
+
+# Alert on sustained packet loss
++ packetloss_sustained
+type = loss
+pattern = >0%,>0%,>0%,>0%,>0%
+edgetrigger = yes
+comment = Sustained packet loss detected (5 checks)
+
+# Alert on high packet loss (5%+)
++ packetloss_high
+type = loss
+pattern = >4%,>4%,>4%
+edgetrigger = yes
+comment = High packet loss detected (5%+)
+
+# ========== LATENCY ALERTS ==========
+# Temporary test - triggers on first check
++ electricity
+type = loss
+# trigger if 3 checks in a row show 100% loss (==100%)
+pattern = ==100%,==100%
+edgetrigger = yes
+comment = Electricity is currently down in the server room
+
++ latency_20ms
+type = rtt
+pattern = >20,>20,>20
+edgetrigger = yes
+comment = Latency above 20ms for 3 consecutive checks
+
+
+# High Latency - 55ms threshold (Warning)
++ latency_55ms
+type = rtt
+pattern = >55,>55,>55
+edgetrigger = yes
+comment = Latency above 55ms for 3 consecutive checks
+
+# High Latency - 55ms threshold (Warning)
++ latency_50ms
+type = rtt
+pattern = >50,>50,>50
+edgetrigger = yes
+comment = Latency above 50ms for 3 consecutive checks
+
+# High Latency - 45ms threshold (Warning)
++ latency_45ms
+type = rtt
+pattern = >45,>45,>45
+edgetrigger = yes
+comment = Latency above 45ms for 3 consecutive checks
+
+# High Latency - 100ms threshold (Elevated)
++ latency_100ms
+type = rtt
+pattern = >100,>100,>100
+edgetrigger = yes
+comment = Latency above 100ms for 3 consecutive checks
+
+# High Latency - 150ms threshold (Critical)
++ latency_150ms
+type = rtt
+pattern = >150,>150,>150
+edgetrigger = yes
+comment = Latency above 150ms for 3 consecutive checks
+
+# Very High Latency - 200ms threshold (Severe)
++ latency_200ms
+type = rtt
+pattern = >200,>200,>200
+edgetrigger = yes
+comment = Latency above 200ms for 3 consecutive checks
+
+# Extreme Latency - 300ms threshold (Critical)
++ latency_300ms
+type = rtt
+pattern = >300,>300
+edgetrigger = yes
+comment = Latency above 300ms for 2 consecutive checks
+
+# Latency Spike - Sudden increase
++ latency_spike
+type = rtt
+pattern = <50,<50,<50,>100,>100
+edgetrigger = yes
+comment = Sudden latency spike detected (doubled from baseline)
+
+# Sustained high latency - Extended period
++ latency_sustained_high
+type = rtt
+pattern = >100,>100,>100,>100,>100,>100
+edgetrigger = yes
+comment = Sustained high latency for 6 consecutive checks (6 minutes)
+
+# Latency degradation - Gradual increase
++ latency_degradation
+type = rtt
+pattern = <50,>50,>75,>100,>125
+edgetrigger = yes
+comment = Progressive latency degradation detected
+
+# ========== COMBINED ALERTS ==========
+

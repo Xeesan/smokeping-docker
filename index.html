@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smokeping Docker Stack — Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1117;
+    --surface2: #131920;
+    --border: rgba(255,255,255,0.06);
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --text: #c9d1d9;
+    --muted: #6e7681;
+    --warning: #fbbf24;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from { transform: translate(0, 0); }
+    to { transform: translate(60px, 40px); }
+  }
+
+  .glow-orb2 {
+    position: fixed;
+    bottom: -10%;
+    right: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: drift2 15s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift2 {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-40px, -60px); }
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  .header { margin-bottom: 64px; animation: fadeUp 0.6s ease both; }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .header-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 58px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .header-desc {
+    max-width: 580px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .header-tag {
+    display: inline-block;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--accent3);
+    letter-spacing: 0.05em;
+  }
+
+  .section { margin-bottom: 52px; animation: fadeUp 0.6s ease both; }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.15s; }
+  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(5) { animation-delay: 0.25s; }
+  .section:nth-child(6) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .section-label h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(0,229,255,0.2), transparent);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card {
+    background: var(--surface);
+    padding: 24px;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .card:hover { background: var(--surface2); }
+  .card:hover::before { opacity: 1; }
+
+  .card-icon { font-size: 20px; margin-bottom: 12px; display: block; }
+
+  .card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .card p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+  .prereq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .prereq-item {
+    background: var(--surface);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: background 0.2s;
+  }
+
+  .prereq-item:hover { background: var(--surface2); }
+
+  .prereq-check {
+    width: 18px; height: 18px;
+    border: 1px solid rgba(0,229,255,0.3);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .prereq-item span { font-size: 13px; color: var(--text); }
+
+  .prereq-item code {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 8px;
+  }
+
+  .tree {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .tree-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tree-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .tree-body { padding: 20px 24px; font-size: 13px; line-height: 2; }
+  .tree-body .dir { color: var(--accent); font-weight: 500; }
+  .tree-body .file { color: var(--text); }
+  .tree-body .comment { color: var(--muted); font-size: 11px; }
+  .tree-body .hl { color: var(--warning); }
+
+  .steps { display: flex; flex-direction: column; gap: 1px; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    background: var(--border);
+  }
+
+  .step:first-child { border-radius: 8px 8px 0 0; overflow: hidden; }
+  .step:last-child  { border-radius: 0 0 8px 8px; overflow: hidden; }
+
+  .step-num {
+    background: var(--surface2);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 22px;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    border-right: 1px solid var(--border);
+  }
+
+  .step-content {
+    background: var(--surface);
+    padding: 20px 24px;
+    transition: background 0.2s;
+  }
+
+  .step:hover .step-content { background: var(--surface2); }
+
+  .step-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .step-content p { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+
+  pre {
+    background: #020408;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 16px;
+    font-size: 12px;
+    overflow-x: auto;
+    color: #e6edf3;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  pre .cmd { color: var(--accent); }
+  pre .val { color: var(--accent3); }
+  pre .key { color: #79c0ff; }
+
+  code:not(pre code) {
+    background: rgba(0,229,255,0.07);
+    border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .trouble-cards { display: flex; flex-direction: column; gap: 12px; }
+
+  .trouble-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .trouble-card:hover { border-color: rgba(0,229,255,0.2); }
+
+  .trouble-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .trouble-body {
+    padding: 16px 18px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-author {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-author span { color: var(--accent); }
+  .footer-tag { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="glow-orb2"></div>
+<div class="wrapper">
+
+  <header class="header">
+    <div class="header-badge">Active · Network Monitor</div>
+    <h1>Smokeping<br><span>Docker Stack</span></h1>
+    <p class="header-sub">With Smart Telegram Alerts · Revamped</p>
+    <p class="header-desc">
+      A fully containerized Smokeping environment tailored for reliable network monitoring. Bundles the core Smokeping daemon, Apache2 web UI, a custom geolocation-aware Telegram alerting system, and sidecar containers for secure remote management via Cloudflare and Tailscale.
+    </p>
+    <span class="header-tag">⚡ Optimized for Game Servers &amp; CDNs</span>
+    <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="https://github.com/Xeesan/smokeping-docker" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:8px 16px;font-size:12px;color:#fff;text-decoration:none;letter-spacing:0.05em;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,229,255,0.08)';this.style.borderColor='rgba(0,229,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.1)'">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Xeesan / smokeping-docker
+      </a>
+      <a href="https://github.com/Xeesan/smokeping-docker/archive/refs/heads/main.zip" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:6px;padding:8px 16px;font-size:12px;color:#00e5ff;text-decoration:none;letter-spacing:0.05em;transition:all 0.2s;" onmouseover="this.style.background='rgba(0,229,255,0.15)'" onmouseout="this.style.background='rgba(0,229,255,0.08)'">
+        ↓ Download ZIP
+      </a>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-label"><h2>Features</h2></div>
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">📡</span>
+        <h3>Standard Polling</h3>
+        <p>Configured for default 300-second steps and 20 pings per step to establish a reliable latency baseline.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🤖</span>
+        <h3>Smart Telegram Alerts</h3>
+        <p>Custom script parses RTT/loss data and routes detailed alerts — power down, host down, latency spikes — with emoji headers and ipinfo.io geolocation tags.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔒</span>
+        <h3>Zero-Trust Access</h3>
+        <p><code>cloudflared</code> exposes the web UI without opening inbound ports. <code>tailscale</code> handles private SSH/backend access.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">💾</span>
+        <h3>Persistent Storage</h3>
+        <p>RRD database files are mounted to a local Docker volume so historical graphs survive container rebuilds.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label"><h2>Prerequisites</h2></div>
+    <div class="prereq-list">
+      <div class="prereq-item">
+        <div class="prereq-check"></div>
+        <span>Telegram Bot Token &amp; Chat ID</span>
+        <code>required</code>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-check"></div>
+        <span>Cloudflare Tunnel Token</span>
+        <code>required</code>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-check"></div>
+        <span>Tailscale Auth Key</span>
+        <code>optional</code>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label"><h2>Directory Tree</h2></div>
+    <div class="tree">
+      <div class="tree-header">
+        <div class="tree-dot" style="background:#f87171"></div>
+        <div class="tree-dot" style="background:#fbbf24"></div>
+        <div class="tree-dot" style="background:#4ade80"></div>
+      </div>
+      <div class="tree-body">
+        <div><span class="dir">smokeping-docker/</span></div>
+        <div>&nbsp;&nbsp;│</div>
+        <div>&nbsp;&nbsp;├── <span class="file">Dockerfile</span></div>
+        <div>&nbsp;&nbsp;├── <span class="file">start.sh</span></div>
+        <div>&nbsp;&nbsp;├── <span class="hl">smokeping-telegram-alert.sh</span></div>
+        <div>&nbsp;&nbsp;├── <span class="file">docker-compose.yml</span></div>
+        <div>&nbsp;&nbsp;│</div>
+        <div>&nbsp;&nbsp;└── <span class="dir">config/</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="hl">Targets</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Add your custom ping targets here</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="hl">Alerts</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Alert thresholds and check alert name</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="hl">Database</span>&nbsp;&nbsp;<span class="comment">← Limits (step=300, pings=20)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label"><h2>Installation &amp; Setup</h2></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Clone the Repository</h3>
+          <p>Download the project files and navigate into the directory.</p>
+          <pre><span class="cmd">$</span> git clone <span class="val">https://github.com/Xeesan/smokeping-docker.git</span>
+<span class="cmd">$</span> cd smokeping-docker</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Configure Telegram Alerts</h3>
+          <p>Open <code>smokeping-telegram-alert.sh</code> and input your credentials.</p>
+          <pre><span class="key">BOT_TOKEN</span>=<span class="val">"your_telegram_bot_token"</span>
+<span class="key">CHAT_ID</span>=<span class="val">"your_telegram_chat_id"</span></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>Add Zero-Trust Credentials</h3>
+          <p>Open <code>docker-compose.yml</code> and paste your access keys. Comment out services you're not using.</p>
+          <pre><span class="key">TUNNEL_TOKEN</span>=<span class="val">your_cloudflare_tunnel_token</span>
+<span class="key">TS_AUTHKEY</span>=<span class="val">your_tailscale_auth_key</span></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Define Your Targets</h3>
+          <p>Open <code>config/Targets</code> and add your IPs, game servers, or web hosts following the Smokeping syntax.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h3>Deploy the Stack</h3>
+          <p>Build the custom image and spin up all sidecars in the background.</p>
+          <pre><span class="cmd">$</span> docker-compose up -d --build</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-label"><h2>Troubleshooting</h2></div>
+    <div class="trouble-cards">
+      <div class="trouble-card">
+        <div class="trouble-title"><span>⚠️</span> Permissions Issue</div>
+        <div class="trouble-body">
+          If Smokeping fails to write graph data, it's likely a mounted volume permission error. <code>start.sh</code> attempts to fix this on boot, but check host directory permissions if mapping to a local folder instead of a Docker volume.
+        </div>
+      </div>
+      <div class="trouble-card">
+        <div class="trouble-title"><span>🔕</span> Alerts Not Firing</div>
+        <div class="trouble-body">
+          Exec into the container and test the script manually to ensure <code>curl</code> and <code>jq</code> are hitting the APIs properly.
+          <pre><span class="cmd">$</span> docker exec -it smokeping_core bash
+<span class="cmd">$</span> /usr/local/bin/smokeping-telegram-alert.sh <span class="val">"test_target"</span> <span class="val">"loss"</span> <span class="val">"100%"</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-author">Maintained by <span>Zisan</span></div>
+    <div class="footer-tag">smokeping-docker · revamped</div>
+  </footer>
+
+</div>
+</body>
+</html>

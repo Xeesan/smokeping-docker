@@ -1,0 +1,451 @@
+*** Targets ***
+
+probe = FPing
+menu = Top
+title = Latency Checker For MUX Technologies
+
+# ---------------------------------------------------
+# Section 1: Internet DNS Providers
+# ---------------------------------------------------
++ InternetDNS
+menu = Internet DNS
+title = Global DNS Servers
+
+++ GoogleDNS
+menu = Google DNS (8.8.8.8)
+title = Google Public DNS
+host = 8.8.8.8
+# Enable alerts for this target
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ GoogleDNS_Sec
+menu = Google DNS (8.8.4.4)
+title = Google Public DNS Secondary
+host = 8.8.4.4
+# Enable alerts for this target
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ Cloudflare
+menu = Cloudflare (1.1.1.1)
+title = Cloudflare DNS
+host = 1.1.1.1
+# Enable alerts for this target
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ Quad9
+menu = Quad9 (9.9.9.9)
+title = Quad9 Secure DNS
+host = 9.9.9.9
+
+++ OpenDNS
+menu = OpenDNS
+title = OpenDNS (Cisco)
+host = 208.67.222.222
+
+# ---------------------------------------------------
+# Section 2: Major Web Services (Best for checking route health)
+# ---------------------------------------------------
++ WebServices
+menu = Web Services
+title = Major Websites & Speedtest Server's Latency
+
+++ GoogleSearch
+menu = Google.com
+title = Google Search
+host = google.com
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
++++ Server_1
+menu = meet.google.com
+title = meet.google.com
+host = meet.google.com
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_2
+menu = 74.125.200.189
+title = 74.125.200.189
+host = 74.125.200.189
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_4
+menu = 142.251.223.14
+title = 142.251.223.14
+host = 142.251.223.14
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+++ Facebook
+menu = Facebook
+title = Facebook
+host = facebook.com
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ AmazonAWS
+menu = Amazon AWS
+title = Amazon Web Services (US)
+host = aws.amazon.com
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ NewMediaExpressSingapore
+menu = NewMedia Express Singapore
+title = 202.150.221.170
+host = 202.150.221.170
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ CDN
+menu = CDN
+title = Content Delivery Network
++++ CDN_Cloudflare
+menu = CDN_CF
+host = 104.26.1.1
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_20ms,latency_spike
++++ Facebook_CDN1_Global
+menu = 57.144.57.32_FB_Global
+host = 57.144.57.32
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_50ms,latency_100ms,latency_spike
++++ Facebook_CDN_Regional
+menu = 157.240.1.60_FB_Regional
+host = 157.240.1.60
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_20ms,latency_55ms,latency_100ms,latency_spike
++++ Facebook_CDN2_Global
+menu = 57.144.210.1_FB_Global
+host = 57.144.210.1
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_50ms,latency_100ms,latency_spike
+
+++ OVH
+menu = OVH_SG
+title = OVH.net_SG
+host = 139.99.123.6
+# Enable alerts for this target
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ OVH_IN
+menu = OVH_IN
+title = OVH.net_IN
+host = 148.113.1.32
+# Enable alerts for this target
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+# ---------------------------------------------------
+# Section 3: Local Network (Critical for diagnosing your own hardware)
+# ---------------------------------------------------
++ LocalNetwork
+menu = Local Network
+title = Alive?
+
+++ Localhost
+menu = Server
+title = Server
+host = localhost
+alerts = electricity
+
++ Gaming-Server
+menu = Gaming Server
+title = Gaming Server
+
+++ Discord
+menu = Discord
++++ 66_22_221_42
+menu = 66.22.221.1
+host = 66.22.221.1
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
++++ 162_159_135_24
+menu = 162.159.135.24
+host = 162.159.135.24
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
+
++++ Server_2
+menu = 162.159.135.234-[Cloudflare]
+title = 162.159.135.234-[Cloudflare]
+host = 162.159.135.234
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_3
+menu = 162.159.138.232
+title = 162.159.138.232
+host = 162.159.138.232
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_4
+menu = 162.159.128.233
+title = 162.159.128.233
+host = 162.159.128.233
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_5
+menu = 162.159.135.232
+title = 162.159.135.232
+host = 162.159.135.232
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_6
+menu = 162.159.136.232
+title = 162.159.136.232
+host = 162.159.136.232
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_7
+menu = 162.159.137.232
+title = 162.159.137.232
+host = 162.159.137.232
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ Amazon-EC2-India
+menu = Amazon EC2 India
++++ 3_6_0_0
+menu = 3.6.0.0
+host = 3.6.0.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
+
+++++ Server_2
+menu = 3.108.0.0
+title = 3.108.0.0
+host = 3.108.0.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+++++ Server_3
+menu = 13.126.0.252
+title = 13.126.0.252
+host = 13.126.0.252
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_4
+menu = 15.206.0.0
+title = 15.206.0.0
+host = 15.206.0.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_5
+menu = 52.66.66.2
+title = 52.66.66.2
+host = 52.66.66.2
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_7
+menu = 65.0.0.0
+title = 65.0.0.0
+host = 65.0.0.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ Lost_Ark_AWS
+menu = Lost_Ark_AWS
++++ Lost_Ark_EU
+menu = 3.64.0.158
+host = 3.64.0.158
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_200ms,latency_spike
+
+++ Valorant-IP
+menu = Valorant
+title = Valorant_SG&IN
++++ Server_1
+menu = 75.2.69.178
+title = 75.2.69.178
+host = 75.2.69.178
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_3
+menu = 76.223.1.250.SG
+title = 76.223.1.250.SG
+host = 76.223.1.250
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_4
+menu = 13.248.193.101.SG
+title = 13.248.193.101.SG
+host = 13.248.193.101
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_5
+menu = 99.83.157.116.SG
+title = 99.83.157.116.SG
+host = 99.83.157.116
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_7
+menu = 99.83.136.104.IN.MUM
+title = 99.83.136.104.IN.MUM
+host = 99.83.136.104
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_8
+menu = 75.2.66.166.IN.MUM
+title = 75.2.66.166.IN.MUM
+host = 75.2.66.166
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_9
+menu = 13.248.197.71.IN.MUM
+title = 13.248.197.71.IN.MUM
+host = 13.248.197.71
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ SG
+menu = 151.106.248.0_SG
+host = 151.106.248.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ IN
+menu = 151.106.246.0_Mumbai
+host = 151.106.246.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+++ eFootball-IP
+menu = eFootball
+title = eFootball_GCP
++++ 35_244_58_187_Mumbai
+menu = 35.244.58.187_Mumbai
+host = 35.244.58.187
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
++++ 34_131_143_138_Delhi
+menu = 34.131.143.138_Delhi
+host = 34.131.143.138
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ 34_93_41_42_Mumbai
+menu = 34.93.41.42_Mumbai
+host = 34.93.41.42
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
++++ 34_14_128_4_Mumbai
+menu = 34.14.128.4_Mumbai                                              
+host = 34.14.128.4
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
++++ 34_100_214_2_Mumbai
+menu = 34.100.214.2_Mumbai
+host = 34.100.214.2
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
++++ 34_47_205_241_Mumbai
+menu = 34.47.205.241_Mumbai
+host = 34.47.205.241
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
+
+++ LoL-IP
+menu = LoL IP
++++ LeagueofLegends
+menu = 203.116.0.36
+host = 203.116.0.36
+
+++ Battlefield-IP
+menu = Battlefield IP
++++ 109_200_221_169
+menu = 109.200.221.169
+host = 109.200.221.169
+
+++ FIFA-IP
+menu = FIFA IP
++++ EAFC25
+menu = 3.108.0.0
+host = 3.108.0.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
+
+++ Apex-Legend-IP
+menu = Apex Legend IP
++++ 129_227_70_7
+menu = 129.227.70.7
+host = 129.227.70.7
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms
++++ AWS_SG
+menu = 54.254.45.29
+host = 54.254.45.29
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_spike
++++ Server_1
+menu = 129.227.70.94.PS4
+title = 129.227.70.94.PS4
+host = 129.227.70.94
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_5
+menu = 129.227.67.202.SG
+title = 129.227.67.202.SG
+host = 129.227.67.202
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_6
+menu = 35.185.189.104
+title = 35.185.189.104
+host = 35.185.189.104
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_8
+menu = 129.227.64.42
+title = 129.227.64.42
+host = 129.227.64.42
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_11
+menu = 129.227.70.6.GCE2
+title = 129.227.70.6.GCE2
+host = 129.227.70.6
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ NEW-WORLD
+menu = NEW WORLD
++++ 3_25_55_17
+menu = 3.25.55.175
+host = 3.25.55.175
+
+++ Counter-Strike2
+menu = Counter-Strike2
++++ 155_133_224_9
+menu = 155.133.224.20
+host = 155.133.224.20
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ ROE-IP
+menu = ROE IP
++++ 150_109_116_3
+menu = 150.109.116.3
+host = 150.109.116.3
+
+++ Rainbow-6-IP
+menu = Rainbow 6 IP
++++ 52_94_11_16
+menu = 52.94.4.16
+host = 52.94.4.16
+
+++ PUBG-IP
+menu = PUBG IP
++++ 119_28_114_29
+menu = 119.28.114.29
+host = 119.28.114.29
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms
+
+++ PUBG-MOBILE-IP
+menu = PUBG MOBILE IP
++++ 156_59_194_34
+menu = 156.59.194.34_BD
+host = 156.59.194.34
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ 156_59_194_130
+menu = 156.59.195.130_BD
+host = 156.59.195.130
+alerts = packetloss_1percent,packetloss_sustained,latency_55ms,latency_100ms,latency_150ms,latency_200ms,packetloss_high
++++ 156_59_194_22
+menu = 156.59.194.22_BD
+host = 156.59.194.22
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
+
+++ COD-IP
+menu = COD IP
++++ 139_180_151_2
+menu = 139.180.151.2
+host = 139.180.151.2
+
+++ VALVE-IP
+menu = VALVE IP
++++ 103_10_124_101
+menu = 103.10.124.145_SG
+host = 103.10.124.145
+
+++ Warzone-IP
+menu = Warzone IP
++++ 139_180_151_2
+menu = 139.180.151.2
+host = 139.180.151.2
+
+++ FORTNITE-IP
+menu = FORTNITE IP
++++ 15_184_0_253
+menu = 15.184.0.253
+host = 15.184.0.253
+
+
+++ Free-Fire-IP
+menu = Free-Fire IP
++++ 129_227_25_86_Global
+menu = 129.227.25.5
+host = 129.227.25.5
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ FF_BD
+menu = 156.59.71.234_BD
+host = 156.59.71.234
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_20ms
+
+++ Mobile-Legends
+menu = Mobile-Legends
++++ 59_153_158_169_BD
+menu = 59.153.158.0
+host = 59.153.158.0
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_1
+menu = 59.153.158.169
+title = 59.153.158.169
+host = 59.153.158.169
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_20ms,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
++++ Server_2
+menu = 59.153.158.46
+title = 59.153.158.46
+host = 59.153.158.46
+alerts = packetloss_1percent,packetloss_sustained,packetloss_high,latency_20ms,latency_55ms,latency_100ms,latency_150ms,latency_200ms,latency_spike
